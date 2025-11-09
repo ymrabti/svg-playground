@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { SvgGeneratorService, SvgParameters } from '../../services/svg-generator.service';
@@ -11,11 +12,17 @@ import { SvgGeneratorService, SvgParameters } from '../../services/svg-generator
   imports: [CommonModule],
 })
 export class SvgPreviewComponent implements OnInit, OnDestroy {
+  @ViewChild('svgContainer', { static: true }) svgContainer!: ElementRef;
+  
   svgContent = '';
+  safeSvgContent: SafeHtml = '';
   currentParameters: SvgParameters | null = null;
   private subscription = new Subscription();
 
-  constructor(private svgGeneratorService: SvgGeneratorService) {}
+  constructor(
+    private svgGeneratorService: SvgGeneratorService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this.subscription.add(
@@ -32,6 +39,13 @@ export class SvgPreviewComponent implements OnInit, OnDestroy {
 
   private generateSvg(): void {
     this.svgContent = this.svgGeneratorService.generateSvgElement();
+    this.safeSvgContent = this.sanitizer.bypassSecurityTrustHtml(this.svgContent);
+    
+    // Update the container directly
+    if (this.svgContainer) {
+      this.svgContainer.nativeElement.innerHTML = this.svgContent;
+    }
+    
     console.log(this.svgContent);
   }
 
