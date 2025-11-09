@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { CurvedStarService } from './curved-star.service';
 
 export interface SvgParameters {
     edgeCount: number;
@@ -10,9 +11,11 @@ export interface SvgParameters {
     fillColor: string;
     centerX: number;
     centerY: number;
-    shape: 'polygon' | 'star' | 'circle' | 'spiral';
+    shape: 'polygon' | 'star' | 'circle' | 'spiral' | 'curved-star';
     innerRadius?: number; // for star shape
     spiralTurns?: number; // for spiral shape
+    curvedRay?: number; // for curved star
+    curvedNoids?: number; // for curved star points
 }
 
 export const defaultSvgParameters: SvgParameters = {
@@ -27,6 +30,8 @@ export const defaultSvgParameters: SvgParameters = {
     shape: 'polygon',
     innerRadius: 50,
     spiralTurns: 3,
+    curvedRay: 200,
+    curvedNoids: 8,
 };
 
 @Injectable({
@@ -36,7 +41,7 @@ export class SvgGeneratorService {
     private parametersSubject = new BehaviorSubject<SvgParameters>(defaultSvgParameters);
     public parameters$ = this.parametersSubject.asObservable();
 
-    constructor() {}
+    constructor(private curvedStarService: CurvedStarService) {}
 
     updateParameters(parameters: Partial<SvgParameters>): void {
         const currentParams = this.parametersSubject.value;
@@ -60,6 +65,8 @@ export class SvgGeneratorService {
                 return this.generateCircle(params);
             case 'spiral':
                 return this.generateSpiral(params);
+            case 'curved-star':
+                return this.generateCurvedStar(params);
             default:
                 return this.generatePolygon(params);
         }
@@ -130,12 +137,65 @@ export class SvgGeneratorService {
         return points.join(' ');
     }
 
+    private generateCurvedStar(params: SvgParameters): string {
+        const curvedParams = {
+            noids: params.curvedNoids || params.edgeCount || 8,
+            radius: params.size,
+            dx: params.centerX,
+            dy: params.centerY,
+            initialAngle: params.angle,
+            ray: params.curvedRay || 200,
+            fillColor: params.fillColor,
+            strokeColor: params.strokeColor,
+            strokeWidth: params.strokeWidth,
+            fillRule: 'evenodd' as const,
+            viewBoxSize: 500
+        };
+
+        const points = this.curvedStarService.starPoints(
+            curvedParams.noids, 
+            curvedParams.radius, 
+            curvedParams.dx, 
+            curvedParams.dy, 
+            curvedParams.initialAngle
+        );
+
+        return this.curvedStarService.drawCurvedStar(
+            points, 
+            () => 1, 
+            curvedParams.ray, 
+            curvedParams.fillRule, 
+            curvedParams.fillColor
+        );
+    }
+
     generateSvgElement(): string {
         const params = this.getCurrentParameters();
+        
+        // Special handling for curved stars
+        if (params.shape === 'curved-star') {
+            const curvedParams = {
+                noids: params.curvedNoids || params.edgeCount || 8,
+                radius: params.size,
+                dx: params.centerX,
+                dy: params.centerY,
+                initialAngle: params.angle,
+                ray: params.curvedRay || 200,
+                fillColor: params.fillColor,
+                strokeColor: params.strokeColor,
+                strokeWidth: params.strokeWidth,
+                fillRule: 'evenodd' as const,
+                viewBoxSize: Math.max(params.centerX + params.size + 50, params.centerY + params.size + 50) * 2
+            };
+            
+            return this.curvedStarService.generateCurvedStar(curvedParams);
+        }
+        
+        // Regular shapes
         const path = this.generateSvgPath();
         const viewBoxSize =
             Math.max(params.centerX + params.size + 50, params.centerY + params.size + 50) * 2;
-            console.log(viewBoxSize);
+        console.log(viewBoxSize);
 
         return `
       <svg width="100%" height="100%" viewBox="0 0 ${viewBoxSize} ${viewBoxSize}" xmlns="http://www.w3.org/2000/svg">

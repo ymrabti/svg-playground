@@ -20,7 +20,8 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
     { value: 'polygon', label: 'Polygon' },
     { value: 'star', label: 'Star' },
     { value: 'circle', label: 'Circle' },
-    { value: 'spiral', label: 'Spiral' }
+    { value: 'spiral', label: 'Spiral' },
+    { value: 'curved-star', label: 'Curved Star' }
   ];
 
   constructor(
@@ -66,7 +67,9 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
       centerX: new FormControl(defaultParams.centerX),
       centerY: new FormControl(defaultParams.centerY),
       innerRadius: new FormControl(defaultParams.innerRadius),
-      spiralTurns: new FormControl(defaultParams.spiralTurns)
+      spiralTurns: new FormControl(defaultParams.spiralTurns),
+      curvedRay: new FormControl(defaultParams.curvedRay),
+      curvedNoids: new FormControl(defaultParams.curvedNoids)
     });
   }
 
@@ -82,7 +85,9 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
       centerY: 250,
       shape: 'polygon',
       innerRadius: 50,
-      spiralTurns: 3
+      spiralTurns: 3,
+      curvedRay: 200,
+      curvedNoids: 8
     });
   }
 
@@ -95,7 +100,9 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
       strokeColor: this.getRandomColor(),
       fillColor: this.getRandomColor(),
       innerRadius: Math.floor(Math.random() * 80) + 20,
-      spiralTurns: Math.floor(Math.random() * 5) + 1
+      spiralTurns: Math.floor(Math.random() * 5) + 1,
+      curvedRay: Math.floor(Math.random() * 300) + 100,
+      curvedNoids: Math.floor(Math.random() * 12) + 4
     };
     
     this.svgGeneratorService.updateParameters(randomParams);
@@ -121,5 +128,9 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
   get isSpiralShape(): boolean {
     return this.parametersForm.get('shape')?.value === 'spiral';
+  }
+
+  get isCurvedStarShape(): boolean {
+    return this.parametersForm.get('shape')?.value === 'curved-star';
   }
 }

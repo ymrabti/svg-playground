@@ -92,6 +92,52 @@
       </div>
     </div>
 
+    <!-- Curved Star Controls -->
+    <div class="form-group" *ngIf="isCurvedStarShape">
+      <label for="curvedNoids">Star Points</label>
+      <div class="input-group">
+        <input 
+          type="range" 
+          id="curvedNoids" 
+          formControlName="curvedNoids" 
+          min="4" 
+          max="16" 
+          step="1"
+          class="form-slider"
+        >
+        <input 
+          type="number" 
+          formControlName="curvedNoids" 
+          min="4" 
+          max="16" 
+          class="form-number"
+        >
+      </div>
+    </div>
+
+    <div class="form-group" *ngIf="isCurvedStarShape">
+      <label for="curvedRay">Curve Radius</label>
+      <div class="input-group">
+        <input 
+          type="range" 
+          id="curvedRay" 
+          formControlName="curvedRay" 
+          min="50" 
+          max="400" 
+          step="10"
+          class="form-slider"
+        >
+        <input 
+          type="number" 
+          formControlName="curvedRay" 
+          min="50" 
+          max="400" 
+          step="10"
+          class="form-number"
+        >
+      </div>
+    </div>
+
     <!-- Angle -->
     <div class="form-group">
       <label for="angle">Rotation Angle (degrees)</label>
