@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
+import { SvgGeneratorService } from './services/svg-generator.service';
 
 @NgModule({
   declarations: [
@@ -10,9 +11,10 @@ import { App } from './app';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
+    SvgGeneratorService,
     provideBrowserGlobalErrorListeners()
   ],
   bootstrap: [App]

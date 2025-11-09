@@ -1,0 +1,81 @@
+.svg-generator-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.split-layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.left-panel {
+  width: 350px;
+  min-width: 300px;
+  max-width: 500px;
+  flex-shrink: 0;
+  height: 100%;
+  border-right: 1px solid #dee2e6;
+  position: relative;
+  
+  // Resize handle
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -3px;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    background: transparent;
+    z-index: 10;
+    
+    &:hover {
+      background: rgba(0, 123, 255, 0.3);
+    }
+  }
+}
+
+.right-panel {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+  .split-layout {
+    flex-direction: column;
+  }
+
+  .left-panel {
+    width: 100%;
+    max-width: 100%;
+    height: 50%;
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+    
+    &::after {
+      display: none;
+    }
+  }
+
+  .right-panel {
+    height: 50%;
+  }
+}
+
+// Tablet responsiveness
+@media (max-width: 1024px) and (min-width: 769px) {
+  .left-panel {
+    width: 300px;
+  }
+}
+
+// Large screens
+@media (min-width: 1400px) {
+  .left-panel {
+    width: 400px;
+  }
+}
