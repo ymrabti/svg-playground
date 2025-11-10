@@ -59,11 +59,12 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             strokeWidth: new FormControl(defaultParams.strokeWidth),
             strokeColor: new FormControl(defaultParams.strokeColor),
             fillColor: new FormControl(defaultParams.fillColor),
+            radius: new FormControl(defaultParams.radius),
             centerX: new FormControl(defaultParams.centerX),
             centerY: new FormControl(defaultParams.centerY),
             innerRadius: new FormControl(defaultParams.innerRadius),
             spiralTurns: new FormControl(defaultParams.spiralTurns),
-            curvedRay: new FormControl(defaultParams.curvedRay),
+            rayRatio: new FormControl(defaultParams.rayRatio),
             curvedNoids: new FormControl(defaultParams.curvedNoids),
         });
     }
@@ -74,6 +75,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             angle: 0,
             size: 100,
             strokeWidth: 2,
+            radius: 280,
             strokeColor: '#333333',
             fillColor: '#4CAF50',
             centerX: 0,
@@ -81,7 +83,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             shape: 'curved-star',
             innerRadius: 50,
             spiralTurns: 3,
-            curvedRay: 200,
+            rayRatio: 1.5,
             curvedNoids: 8,
         });
     }
@@ -95,8 +97,11 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             strokeColor: this.getRandomColor(),
             fillColor: this.getRandomColor(),
             innerRadius: Math.floor(Math.random() * 80) + 20,
+            radius: Math.floor(Math.random() * 300) + 50,
+            centerX: Math.floor(Math.random() * 201) - 100,
+            centerY: Math.floor(Math.random() * 201) - 100,
             spiralTurns: Math.floor(Math.random() * 5) + 1,
-            curvedRay: Math.floor(Math.random() * 300) + 100,
+            rayRatio: Math.floor(Math.random() * 4.5) + 1.5,
             curvedNoids: Math.floor(Math.random() * 12) + 4,
         };
 

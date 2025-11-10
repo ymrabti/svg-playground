@@ -1,27 +1,30 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { CurvedStarService } from './curved-star.service';
+import { CurvedStarParameters, CurvedStarService } from './curved-star.service';
 
 export interface SvgParameters {
     edgeCount: number;
     angle: number;
     size: number;
+    radius: number;
+    rayRatio: number; // for curved star
+    // styles
     strokeWidth: number;
     strokeColor: string;
     fillColor: string;
+    // position
     centerX: number;
     centerY: number;
     shape: 'polygon' | 'star' | 'circle' | 'spiral' | 'curved-star';
     innerRadius?: number; // for star shape
     spiralTurns?: number; // for spiral shape
-    curvedRay?: number; // for curved star
     curvedNoids?: number; // for curved star points
 }
 
 export const defaultSvgParameters: SvgParameters = {
     edgeCount: 6,
     angle: 0,
-    size: 100,
+    size: 300,
     strokeWidth: 2,
     strokeColor: '#333333',
     fillColor: '#4CAF50',
@@ -30,7 +33,8 @@ export const defaultSvgParameters: SvgParameters = {
     shape: 'curved-star',
     innerRadius: 50,
     spiralTurns: 3,
-    curvedRay: 200,
+    rayRatio: 1.5,
+    radius: 280,
     curvedNoids: 8,
 };
 
@@ -144,7 +148,7 @@ export class SvgGeneratorService {
             dx: params.centerX,
             dy: params.centerY,
             initialAngle: params.angle,
-            ray: params.curvedRay || 200,
+            rayRatio: params.rayRatio || 1.5,
             fillColor: params.fillColor,
             strokeColor: params.strokeColor,
             strokeWidth: params.strokeWidth,
@@ -163,7 +167,7 @@ export class SvgGeneratorService {
         return this.curvedStarService.drawCurvedStar(
             points,
             () => 1,
-            curvedParams.ray,
+            curvedParams.rayRatio,
             curvedParams.fillRule,
             curvedParams.fillColor
         );
@@ -174,20 +178,22 @@ export class SvgGeneratorService {
 
         // Special handling for curved stars
         if (params.shape === 'curved-star') {
-            const curvedParams = {
+            const calculatedX = params.centerX + params.size + 15;
+            const calculatedY = params.centerY + params.size + 15;
+            const curvedParams: CurvedStarParameters = {
                 noids: params.curvedNoids || params.edgeCount || 8,
-                radius: params.size,
+                radius: params.radius,
+                rayRatio: params.rayRatio || 1.5,
+                viewBoxSize: params.size,
+                // adjustements
                 dx: params.centerX,
                 dy: params.centerY,
                 initialAngle: params.angle,
-                ray: params.curvedRay || 200,
+                // styles
                 fillColor: params.fillColor,
                 strokeColor: params.strokeColor,
                 strokeWidth: params.strokeWidth,
                 fillRule: 'evenodd' as const,
-                viewBoxSize:
-                    Math.max(params.centerX + params.size + 15, params.centerY + params.size + 15) *
-                    2,
             };
 
             return this.curvedStarService.generateCurvedStar(curvedParams);

@@ -6,7 +6,7 @@ export interface CurvedStarParameters {
     dx: number;
     dy: number;
     initialAngle: number;
-    ray: number;
+    rayRatio: number;
     fillColor: string;
     strokeColor: string;
     strokeWidth: number;
@@ -20,7 +20,7 @@ export const defaultCurvedStarParameters: CurvedStarParameters = {
     dx: 0,
     dy: 0,
     initialAngle: 0,
-    ray: 200,
+    rayRatio: 1.5,
     fillColor: '#FF6B6B',
     strokeColor: 'transparent',
     strokeWidth: 1,
@@ -96,7 +96,7 @@ export class CurvedStarService {
     drawCurvedStar(
         points: number[][],
         rayFunction: (i: number) => number = () => 1,
-        ray: number,
+        rayon: number,
         fillRule: string,
         fillColor: string
     ): string {
@@ -108,8 +108,8 @@ export class CurvedStarService {
                 const ry = rayFunction(ind);
                 curvePath = curvePath.concat([
                     'A',
-                    ray.toString(),
-                    ray.toString(),
+                    rayon.toString(),
+                    rayon.toString(),
                     '0',
                     '0',
                     ry.toString(),
@@ -142,14 +142,14 @@ export class CurvedStarService {
             const evenPath = this.drawCurvedStar(
                 evenPoints,
                 () => 1,
-                params.ray,
+                params.rayRatio * params.radius,
                 params.fillRule,
                 params.fillColor
             );
             const oddPath = this.drawCurvedStar(
                 oddPoints,
                 () => 1,
-                params.ray,
+                params.rayRatio * params.radius,
                 params.fillRule,
                 params.fillColor
             );
@@ -159,7 +159,7 @@ export class CurvedStarService {
             const path = this.drawCurvedStar(
                 points,
                 (i) => 1 - (i % 2),
-                params.ray,
+                params.rayRatio * params.radius,
                 params.fillRule,
                 params.fillColor
             );
@@ -277,7 +277,7 @@ export class CurvedStarService {
         // Variation 2: Different ray values for more organic curves
         const organicParams = {
             ...baseParams,
-            ray: baseParams.ray * 1.5,
+            rayRatio: baseParams.rayRatio,
             fillColor: this.getRandomColor(),
         };
         variations.push(this.generateCurvedStar(organicParams));
