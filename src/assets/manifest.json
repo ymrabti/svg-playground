@@ -4,28 +4,28 @@
   "description": "Create stunning SVG graphics with real-time preview. Design polygons, stars, spirals, and curved shapes.",
   "icons": [
     {
-      "src": "assets/icons/favicon-16x16.png",
+      "src": "icons/favicon-16x16.png",
       "sizes": "16x16",
       "type": "image/png"
     },
     {
-      "src": "assets/icons/favicon-32x32.png",
+      "src": "icons/favicon-32x32.png",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "assets/icons/apple-touch-icon.png",
+      "src": "icons/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "assets/icons/android-chrome-192x192.png",
+      "src": "icons/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "assets/icons/android-chrome-512x512.png",
+      "src": "icons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -38,21 +38,5 @@
   "orientation": "any",
   "scope": "/",
   "lang": "en-US",
-  "categories": ["design", "graphics", "productivity", "utilities"],
-  "screenshots": [
-    {
-      "src": "assets/images/screenshot-desktop.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "SVG Generator Desktop Interface"
-    },
-    {
-      "src": "assets/images/screenshot-mobile.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "SVG Generator Mobile Interface"
-    }
-  ]
+  "categories": ["design", "graphics", "productivity", "utilities"]
 }
