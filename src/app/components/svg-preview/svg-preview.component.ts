@@ -28,7 +28,7 @@ export class SvgPreviewComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.svgGeneratorService.parameters$.subscribe((params: SvgParameters) => {
                 this.currentParameters = params;
-                this.generateSvg();
+                this.generateSvg().then(() => {});
             })
         );
     }
@@ -37,8 +37,8 @@ export class SvgPreviewComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    private generateSvg(): void {
-        this.svgContent = this.svgGeneratorService.generateSvgElement();
+    private async generateSvg(): Promise<void> {
+        this.svgContent = await this.svgGeneratorService.generateSvgElement();
         this.safeSvgContent = this.sanitizer.bypassSecurityTrustHtml(this.svgContent);
 
         // Update the container directly

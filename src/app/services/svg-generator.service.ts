@@ -277,7 +277,7 @@ export class SvgGeneratorService {
             L ${params.centerX - params.size},${params.centerY + params.size} Z`;
     }
 
-    generateSvgElement(): string {
+    async generateSvgElement(): Promise<string> {
         const params = this.getCurrentParameters();
 
         // Special handling for curved stars
@@ -346,37 +346,28 @@ export class SvgGeneratorService {
 
         // Special handling for GIS
         if (params.shape === 'gis') {
+            const gisParams: GisRendererParameters = {
+                sourceUrl: params.gisSourceUrl || '',
+                scalingFunction: params.gisScalingFunction || 'min',
+                translateX: params.centerX,
+                translateY: params.centerY,
+                fillColor: params.fillColor,
+                scale: params.size / 200,
+                strokeColor: params.strokeColor,
+                strokeWidth: params.strokeWidth,
+                fillColors: [params.fillColor],
+                showBoundingBox: params.showBoundingBox || true,
+                boundingBoxColor: params.strokeColor,
+                viewBoxSize: Math.max(params.size * 2.5, 600),
+            };
             if (!params.gisSourceUrl) {
                 // Return sample GIS data if no URL provided
                 const sampleData = this.gisRendererService.generateSampleGeoJson();
-                const gisParams: GisRendererParameters = {
-                    sourceUrl: '',
-                    scalingFunction: params.gisScalingFunction || 'min',
-                    translateX: params.centerX,
-                    translateY: params.centerY,
-                    scale: params.size / 200,
-                    strokeColor: params.strokeColor,
-                    strokeWidth: params.strokeWidth,
-                    fillColors: [params.fillColor],
-                    showBoundingBox: params.showBoundingBox || true,
-                    boundingBoxColor: params.strokeColor,
-                    viewBoxSize: Math.max(params.size * 2.5, 600),
-                    useRandomColors: params.useRandomGisColors || true,
-                };
                 return this.gisRendererService.generateGisMapFromData(sampleData, gisParams);
             }
 
             // Return placeholder for async GIS loading
-            return `
-                <svg width="100%" height="100%" viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg">
-                    <text x="0" y="0" text-anchor="middle" fill="${params.fillColor}" font-size="16">
-                        Loading GIS Data...
-                    </text>
-                    <text x="0" y="30" text-anchor="middle" fill="${params.strokeColor}" font-size="12">
-                        ${params.gisSourceUrl}
-                    </text>
-                </svg>
-            `;
+            return await this.gisRendererService.generateGisMap(gisParams);
         }
 
         // Regular shapes

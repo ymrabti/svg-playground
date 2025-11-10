@@ -100,7 +100,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             fillColor: '#4CAF50',
             centerX: 0,
             centerY: 0,
-            shape: 'custom-star',
+            shape: 'gis',
             innerRadius: 50,
             spiralTurns: 3,
             rayRatio: 1.5,
@@ -166,7 +166,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
     get isShapeWithEdges(): boolean {
         const shape = this.parametersForm.get('shape')?.value;
-        return shape === 'polygon' || shape === 'star' || shape === 'custom-star' || shape === 'yinyang' || shape === 'gis';
+        return shape === 'polygon' || shape === 'star' || shape === 'custom-star' || shape === 'yinyang';
     }
 
     get isStarShape(): boolean {
