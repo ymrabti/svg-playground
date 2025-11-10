@@ -52,8 +52,8 @@ export const SEO_CONFIG = {
 
   // Images
   IMAGES: {
-    ogImage: '/assets/images/og-preview.png',
-    twitterImage: '/assets/images/twitter-preview.png',
+    ogImage: '/assets/icons/apple-touch-icon.png',
+    twitterImage: '/assets/icons/apple-touch-icon.png',
     logo: '/assets/icons/logo.svg',
     favicon: '/assets/icons/favicon.svg'
   },
