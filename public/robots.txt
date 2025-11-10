@@ -1,0 +1,35 @@
+# Robots.txt for SVG Generator
+# https://svg-playground.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://svg-playground.com/sitemap.xml
+
+# Allow all search engines to crawl the site
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Disallow crawling of assets that don't need indexing
+Disallow: /assets/fonts/
+Disallow: /assets/data/
+
+# Allow crawling of important assets
+Allow: /assets/icons/
+Allow: /assets/images/
+
+# Crawl delay (optional)
+Crawl-delay: 1
+
+# Host preference (canonical domain)
+Host: svg-playground.com

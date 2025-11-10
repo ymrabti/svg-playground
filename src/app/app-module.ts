@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { SvgGeneratorService } from './services/svg-generator.service';
+import { SeoService } from './services/seo.service';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { SvgGeneratorService } from './services/svg-generator.service';
   ],
   providers: [
     SvgGeneratorService,
+    SeoService,
     provideBrowserGlobalErrorListeners()
   ],
   bootstrap: [App]
