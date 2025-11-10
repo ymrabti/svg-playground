@@ -19,6 +19,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
     shapeOptions = [
         { value: 'curved-star', label: 'Curved Star' },
         { value: 'custom-star', label: 'Custom Star' },
+        { value: 'yinyang', label: 'Yin Yang' },
         { value: 'polygon', label: 'Polygon' },
         { value: 'star', label: 'Star' },
         { value: 'circle', label: 'Circle' },
@@ -77,6 +78,8 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             startVertex: new FormControl(defaultParams.startVertex),
             nested: new FormControl(defaultParams.nested),
             spinDuration: new FormControl(defaultParams.spinDuration === false ? '' : defaultParams.spinDuration),
+            // yinyang parameters
+            useGradient: new FormControl(defaultParams.useGradient),
         });
     }
 
@@ -100,6 +103,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             startVertex: 0,
             nested: false,
             spinDuration: false,
+            useGradient: true,
         });
     }
 
@@ -121,6 +125,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             minRadius: Math.floor(Math.random() * 50) + 10,
             startVertex: Math.floor(Math.random() * 8),
             nested: Math.random() > 0.5,
+            useGradient: Math.random() > 0.5,
         };
 
         this.svgGeneratorService.updateParameters(randomParams);
@@ -149,7 +154,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
     get isShapeWithEdges(): boolean {
         const shape = this.parametersForm.get('shape')?.value;
-        return shape === 'polygon' || shape === 'star' || shape === 'custom-star';
+        return shape === 'polygon' || shape === 'star' || shape === 'custom-star' || shape === 'yinyang';
     }
 
     get isStarShape(): boolean {
@@ -166,5 +171,9 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
     get isCustomStarShape(): boolean {
         return this.parametersForm.get('shape')?.value === 'custom-star';
+    }
+
+    get isYinYangShape(): boolean {
+        return this.parametersForm.get('shape')?.value === 'yinyang';
     }
 }

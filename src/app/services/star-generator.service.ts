@@ -293,7 +293,6 @@ export class StarGeneratorService {
         let currentRadius = params.radius;
 
         while ((currentRadius > params.minRadius && params.noids > 4 && params.nested) || i < 1) {
-            console.table({ currentRadius, i, minRadius: params.minRadius, nested: params.nested });
             const alpha = (180 * i) / params.noids - params.initialAngle;
             const starPaths = this.generateStarPaths(
                 params.noids,

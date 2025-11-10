@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CurvedStarParameters, CurvedStarService } from './curved-star.service';
 import { StarGeneratorService, StarGeneratorParameters } from './star-generator.service';
+import { YinYangGeneratorService, YinYangParameters } from './yinyang-generator.service';
 
 export interface SvgParameters {
     edgeCount: number;
@@ -16,7 +17,7 @@ export interface SvgParameters {
     // position
     centerX: number;
     centerY: number;
-    shape: 'polygon' | 'star' | 'circle' | 'spiral' | 'curved-star' | 'custom-star';
+    shape: 'polygon' | 'star' | 'circle' | 'spiral' | 'curved-star' | 'custom-star' | 'yinyang';
     innerRadius?: number; // for star shape
     spiralTurns?: number; // for spiral shape
     curvedNoids?: number; // for curved star points
@@ -25,6 +26,8 @@ export interface SvgParameters {
     startVertex?: number; // starting vertex
     spinDuration?: string | false; // spin animation duration
     nested?: boolean; // create nested stars
+    // yinyang parameters
+    useGradient?: boolean; // use gradient colors for yinyang
 }
 
 export const defaultSvgParameters: SvgParameters = {
@@ -47,6 +50,8 @@ export const defaultSvgParameters: SvgParameters = {
     startVertex: 0,
     spinDuration: false,
     nested: false,
+    // yinyang defaults
+    useGradient: true,
 };
 
 @Injectable({
@@ -58,7 +63,8 @@ export class SvgGeneratorService {
 
     constructor(
         private curvedStarService: CurvedStarService,
-        private starGeneratorService: StarGeneratorService
+        private starGeneratorService: StarGeneratorService,
+        private yinYangGeneratorService: YinYangGeneratorService
     ) {}
 
     updateParameters(parameters: Partial<SvgParameters>): void {
@@ -87,6 +93,8 @@ export class SvgGeneratorService {
                 return this.generateCurvedStar(params);
             case 'custom-star':
                 return this.generateCustomStar(params);
+            case 'yinyang':
+                return this.generateYinYang(params);
             default:
                 return this.generatePolygon(params);
         }
@@ -226,6 +234,27 @@ export class SvgGeneratorService {
         }
     }
 
+    private generateYinYang(params: SvgParameters): string {
+        const yinYangParams: YinYangParameters = {
+            noids: params.edgeCount,
+            radius: params.size,
+            dx: params.centerX,
+            dy: params.centerY,
+            initialAngle: params.angle,
+            spinDuration: params.spinDuration || false,
+            baseColor: params.fillColor,
+            strokeColor: params.strokeColor,
+            strokeWidth: params.strokeWidth,
+            useGradient: params.useGradient || true,
+            viewBoxSize: Math.max(params.size * 2.5, 600),
+        };
+
+        // For path generation mode, return a simple circular path
+        return `M ${params.centerX - params.size},${params.centerY} 
+            A ${params.size},${params.size} 0 1,1 ${params.centerX + params.size},${params.centerY} 
+            A ${params.size},${params.size} 0 1,1 ${params.centerX - params.size},${params.centerY} Z`;
+    }
+
     generateSvgElement(): string {
         const params = this.getCurrentParameters();
 
@@ -272,6 +301,25 @@ export class SvgGeneratorService {
             };
 
             return this.starGeneratorService.generateStar(starParams);
+        }
+
+        // Special handling for YinYang
+        if (params.shape === 'yinyang') {
+            const yinYangParams: YinYangParameters = {
+                noids: params.edgeCount,
+                radius: params.size,
+                dx: params.centerX,
+                dy: params.centerY,
+                initialAngle: params.angle,
+                spinDuration: params.spinDuration || false,
+                baseColor: params.fillColor,
+                strokeColor: params.strokeColor,
+                strokeWidth: params.strokeWidth,
+                useGradient: params.useGradient || true,
+                viewBoxSize: Math.max(params.size * 2.5, 600),
+            };
+
+            return this.yinYangGeneratorService.generateYinYang(yinYangParams);
         }
 
         // Regular shapes
