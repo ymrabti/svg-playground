@@ -25,9 +25,9 @@ export const defaultSvgParameters: SvgParameters = {
     strokeWidth: 2,
     strokeColor: '#333333',
     fillColor: '#4CAF50',
-    centerX: 250,
-    centerY: 250,
-    shape: 'polygon',
+    centerX: 0,
+    centerY: 0,
+    shape: 'curved-star',
     innerRadius: 50,
     spiralTurns: 3,
     curvedRay: 200,
@@ -149,29 +149,29 @@ export class SvgGeneratorService {
             strokeColor: params.strokeColor,
             strokeWidth: params.strokeWidth,
             fillRule: 'evenodd' as const,
-            viewBoxSize: 500
+            viewBoxSize: 500,
         };
 
         const points = this.curvedStarService.starPoints(
-            curvedParams.noids, 
-            curvedParams.radius, 
-            curvedParams.dx, 
-            curvedParams.dy, 
+            curvedParams.noids,
+            curvedParams.radius,
+            curvedParams.dx,
+            curvedParams.dy,
             curvedParams.initialAngle
         );
 
         return this.curvedStarService.drawCurvedStar(
-            points, 
-            () => 1, 
-            curvedParams.ray, 
-            curvedParams.fillRule, 
+            points,
+            () => 1,
+            curvedParams.ray,
+            curvedParams.fillRule,
             curvedParams.fillColor
         );
     }
 
     generateSvgElement(): string {
         const params = this.getCurrentParameters();
-        
+
         // Special handling for curved stars
         if (params.shape === 'curved-star') {
             const curvedParams = {
@@ -185,20 +185,23 @@ export class SvgGeneratorService {
                 strokeColor: params.strokeColor,
                 strokeWidth: params.strokeWidth,
                 fillRule: 'evenodd' as const,
-                viewBoxSize: Math.max(params.centerX + params.size + 50, params.centerY + params.size + 50) * 2
+                viewBoxSize:
+                    Math.max(params.centerX + params.size + 15, params.centerY + params.size + 15) *
+                    2,
             };
-            
+
             return this.curvedStarService.generateCurvedStar(curvedParams);
         }
-        
+
         // Regular shapes
         const path = this.generateSvgPath();
         const viewBoxSize =
             Math.max(params.centerX + params.size + 50, params.centerY + params.size + 50) * 2;
-        console.log(viewBoxSize);
 
         return `
-      <svg width="100%" height="100%" viewBox="0 0 ${viewBoxSize} ${viewBoxSize}" xmlns="http://www.w3.org/2000/svg">
+      <svg width="100%" height="100%" viewBox="${-viewBoxSize / 2} ${
+            -viewBoxSize / 2
+        } ${viewBoxSize} ${viewBoxSize}" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:${params.fillColor};stop-opacity:1" />

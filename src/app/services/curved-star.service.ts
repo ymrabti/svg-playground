@@ -17,8 +17,8 @@ export interface CurvedStarParameters {
 export const defaultCurvedStarParameters: CurvedStarParameters = {
     noids: 8,
     radius: 100,
-    dx: 250,
-    dy: 250,
+    dx: 0,
+    dy: 0,
     initialAngle: 0,
     ray: 200,
     fillColor: '#FF6B6B',
@@ -41,10 +41,10 @@ export class CurvedStarService {
      */
     starPoints(noids: number, r: number, dx: number, dy: number, initialAngle: number): number[][] {
         return [...Array(noids)].map((_, i) => {
-            const angle = (360 / noids) * i - initialAngle;
-            const angra = (angle * this.PI) / 180;
-            const coss = Math.cos(angra) * r + dx;
-            const sinn = Math.sin(angra) * r + dy;
+            let angle = (360 / noids) * i - initialAngle;
+            let angra = (angle * this.PI) / 180;
+            let coss = Math.cos(angra) * r + dx;
+            let sinn = Math.sin(angra) * r + dy;
             return [parseFloat(coss.toFixed(2)), parseFloat(sinn.toFixed(2))];
         });
     }
@@ -83,8 +83,11 @@ export class CurvedStarService {
      * Calculate step for path creation
      */
     private calculateStep(length: number): number {
-        // This is a simplified version - you might want to adjust based on your needs
-        return Math.max(1, Math.floor(length / 2));
+        if (length % 2 == 1) {
+            return (length - (length % 2)) / 2;
+        } else {
+            return (length - 1 - ((length - 1) % 2)) / 2;
+        }
     }
 
     /**
@@ -155,7 +158,7 @@ export class CurvedStarService {
         } else {
             const path = this.drawCurvedStar(
                 points,
-                () => 1,
+                (i) => 1 - (i % 2),
                 params.ray,
                 params.fillRule,
                 params.fillColor
@@ -202,7 +205,9 @@ export class CurvedStarService {
             </feMerge>
           </filter>
         </defs>
-        <rect width="${params.viewBoxSize}" height="${params.viewBoxSize}" x="0" y="0" 
+        <rect width="${params.viewBoxSize}" height="${params.viewBoxSize}" x="${
+            -params.viewBoxSize / 2
+        }" y="${-params.viewBoxSize / 2}" 
               stroke="rgba(0,0,0,0.1)" fill="none" stroke-width="1" stroke-dasharray="5,5"/>
         ${pathElements}
       </svg>

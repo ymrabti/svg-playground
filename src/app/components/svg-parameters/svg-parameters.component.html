@@ -1,257 +1,118 @@
 <div class="parameters-panel">
-  <div class="panel-header">
-    <h3>SVG Parameters</h3>
-    <div class="action-buttons">
-      <button type="button" class="btn btn-secondary" (click)="resetToDefaults()">
-        Reset
-      </button>
-      <button type="button" class="btn btn-primary" (click)="randomizeParameters()">
-        Randomize
-      </button>
-    </div>
-  </div>
-
-  <form [formGroup]="parametersForm" class="parameters-form">
-    <!-- Shape Selection -->
-    <div class="form-group">
-      <label for="shape">Shape Type</label>
-      <select id="shape" formControlName="shape" class="form-control">
-        <option *ngFor="let option of shapeOptions" [value]="option.value">
-          {{ option.label }}
-        </option>
-      </select>
+    <div class="panel-header">
+        <h3>SVG Parameters</h3>
+        <div class="action-buttons">
+            <button type="button" class="btn btn-secondary" (click)="resetToDefaults()">
+                Reset
+            </button>
+            <button type="button" class="btn btn-primary" (click)="randomizeParameters()">
+                Randomize
+            </button>
+        </div>
     </div>
 
-    <!-- Edge Count (for polygon and star) -->
-    <div class="form-group" *ngIf="isShapeWithEdges">
-      <label for="edgeCount">Edge Count</label>
-      <div class="input-group">
-        <input 
-          type="range" 
-          id="edgeCount" 
-          formControlName="edgeCount" 
-          min="3" 
-          max="20" 
-          step="1"
-          class="form-slider"
-        >
-        <input 
-          type="number" 
-          formControlName="edgeCount" 
-          min="3" 
-          max="20" 
-          class="form-number"
-        >
-      </div>
-    </div>
+    <form [formGroup]="parametersForm" class="parameters-form">
+        <!-- Shape Selection -->
+        <div class="form-group">
+            <label for="shape">Shape Type</label>
+            <select id="shape" formControlName="shape" class="form-control">
+                <option *ngFor="let option of shapeOptions" [value]="option.value">
+                    {{ option.label }}
+                </option>
+            </select>
+        </div>
 
-    <!-- Inner Radius (for star) -->
-    <div class="form-group" *ngIf="isStarShape">
-      <label for="innerRadius">Inner Radius</label>
-      <div class="input-group">
-        <input 
-          type="range" 
-          id="innerRadius" 
-          formControlName="innerRadius" 
-          min="10" 
-          max="200" 
-          step="5"
-          class="form-slider"
-        >
-        <input 
-          type="number" 
-          formControlName="innerRadius" 
-          min="10" 
-          max="200" 
-          class="form-number"
-        >
-      </div>
-    </div>
+        <!-- Edge Count (for polygon and star) -->
+        <div class="form-group" *ngIf="isShapeWithEdges">
+            <label for="edgeCount">Edge Count</label>
+            <div class="input-group">
+                <input type="range" id="edgeCount" formControlName="edgeCount" min="3" max="20" step="1" class="form-slider">
+                <input type="number" formControlName="edgeCount" min="3" max="20" class="form-number">
+            </div>
+        </div>
 
-    <!-- Spiral Turns (for spiral) -->
-    <div class="form-group" *ngIf="isSpiralShape">
-      <label for="spiralTurns">Spiral Turns</label>
-      <div class="input-group">
-        <input 
-          type="range" 
-          id="spiralTurns" 
-          formControlName="spiralTurns" 
-          min="1" 
-          max="10" 
-          step="0.5"
-          class="form-slider"
-        >
-        <input 
-          type="number" 
-          formControlName="spiralTurns" 
-          min="1" 
-          max="10" 
-          step="0.5"
-          class="form-number"
-        >
-      </div>
-    </div>
+        <!-- Inner Radius (for star) -->
+        <div class="form-group" *ngIf="isStarShape">
+            <label for="innerRadius">Inner Radius</label>
+            <div class="input-group">
+                <input type="range" id="innerRadius" formControlName="innerRadius" min="10" max="200" step="5" class="form-slider">
+                <input type="number" formControlName="innerRadius" min="10" max="200" class="form-number">
+            </div>
+        </div>
 
-    <!-- Curved Star Controls -->
-    <div class="form-group" *ngIf="isCurvedStarShape">
-      <label for="curvedNoids">Star Points</label>
-      <div class="input-group">
-        <input 
-          type="range" 
-          id="curvedNoids" 
-          formControlName="curvedNoids" 
-          min="4" 
-          max="16" 
-          step="1"
-          class="form-slider"
-        >
-        <input 
-          type="number" 
-          formControlName="curvedNoids" 
-          min="4" 
-          max="16" 
-          class="form-number"
-        >
-      </div>
-    </div>
+        <!-- Spiral Turns (for spiral) -->
+        <div class="form-group" *ngIf="isSpiralShape">
+            <label for="spiralTurns">Spiral Turns</label>
+            <div class="input-group">
+                <input type="range" id="spiralTurns" formControlName="spiralTurns" min="1" max="10" step="0.5" class="form-slider">
+                <input type="number" formControlName="spiralTurns" min="1" max="10" step="0.5" class="form-number">
+            </div>
+        </div>
 
-    <div class="form-group" *ngIf="isCurvedStarShape">
-      <label for="curvedRay">Curve Radius</label>
-      <div class="input-group">
-        <input 
-          type="range" 
-          id="curvedRay" 
-          formControlName="curvedRay" 
-          min="50" 
-          max="400" 
-          step="10"
-          class="form-slider"
-        >
-        <input 
-          type="number" 
-          formControlName="curvedRay" 
-          min="50" 
-          max="400" 
-          step="10"
-          class="form-number"
-        >
-      </div>
-    </div>
+        <!-- Curved Star Controls -->
+        <div class="form-group" *ngIf="isCurvedStarShape">
+            <label for="curvedNoids">Star Points</label>
+            <div class="input-group">
+                <input type="range" id="curvedNoids" formControlName="curvedNoids" min="4" max="16" step="1" class="form-slider">
+                <input type="number" formControlName="curvedNoids" min="4" max="16" class="form-number">
+            </div>
+        </div>
 
-    <!-- Angle -->
-    <div class="form-group">
-      <label for="angle">Rotation Angle (degrees)</label>
-      <div class="input-group">
-        <input 
-          type="range" 
-          id="angle" 
-          formControlName="angle" 
-          min="0" 
-          max="360" 
-          step="1"
-          class="form-slider"
-        >
-        <input 
-          type="number" 
-          formControlName="angle" 
-          min="0" 
-          max="360" 
-          class="form-number"
-        >
-      </div>
-    </div>
+        <div class="form-group" *ngIf="isCurvedStarShape">
+            <label for="curvedRay">Curve Radius</label>
+            <div class="input-group">
+                <input type="range" id="curvedRay" formControlName="curvedRay" min="50" max="400" step="10" class="form-slider">
+                <input type="number" formControlName="curvedRay" min="50" max="400" step="10" class="form-number">
+            </div>
+        </div>
 
-    <!-- Size -->
-    <div class="form-group">
-      <label for="size">Size</label>
-      <div class="input-group">
-        <input 
-          type="range" 
-          id="size" 
-          formControlName="size" 
-          min="20" 
-          max="300" 
-          step="5"
-          class="form-slider"
-        >
-        <input 
-          type="number" 
-          formControlName="size" 
-          min="20" 
-          max="300" 
-          class="form-number"
-        >
-      </div>
-    </div>
+        <!-- Angle -->
+        <div class="form-group">
+            <label for="angle">Rotation Angle (degrees)</label>
+            <div class="input-group">
+                <input type="range" id="angle" formControlName="angle" min="0" max="360" step="1" class="form-slider">
+                <input type="number" formControlName="angle" min="0" max="360" class="form-number">
+            </div>
+        </div>
 
-    <!-- Center Position -->
-    <div class="form-row">
-      <div class="form-group half-width">
-        <label for="centerX">Center X</label>
-        <input 
-          type="number" 
-          id="centerX" 
-          formControlName="centerX" 
-          min="50" 
-          max="450" 
-          class="form-control"
-        >
-      </div>
-      <div class="form-group half-width">
-        <label for="centerY">Center Y</label>
-        <input 
-          type="number" 
-          id="centerY" 
-          formControlName="centerY" 
-          min="50" 
-          max="450" 
-          class="form-control"
-        >
-      </div>
-    </div>
+        <!-- Size -->
+        <div class="form-group">
+            <label for="size">Size</label>
+            <div class="input-group">
+                <input type="range" id="size" formControlName="size" min="20" max="300" step="5" class="form-slider">
+                <input type="number" formControlName="size" min="20" max="300" class="form-number">
+            </div>
+        </div>
 
-    <!-- Stroke Properties -->
-    <div class="form-group">
-      <label for="strokeWidth">Stroke Width</label>
-      <div class="input-group">
-        <input 
-          type="range" 
-          id="strokeWidth" 
-          formControlName="strokeWidth" 
-          min="0" 
-          max="10" 
-          step="0.5"
-          class="form-slider"
-        >
-        <input 
-          type="number" 
-          formControlName="strokeWidth" 
-          min="0" 
-          max="10" 
-          step="0.5"
-          class="form-number"
-        >
-      </div>
-    </div>
+        <!-- Center Position -->
+        <div class="form-row">
+            <div class="form-group half-width">
+                <label for="centerX">Center X</label>
+                <input type="number" id="centerX" formControlName="centerX" min="50" max="450" class="form-control">
+            </div>
+            <div class="form-group half-width">
+                <label for="centerY">Center Y</label>
+                <input type="number" id="centerY" formControlName="centerY" min="50" max="450" class="form-control">
+            </div>
+        </div>
 
-    <div class="form-group">
-      <label for="strokeColor">Stroke Color</label>
-      <input 
-        type="color" 
-        id="strokeColor" 
-        formControlName="strokeColor" 
-        class="form-color"
-      >
-    </div>
+        <!-- Stroke Properties -->
+        <div class="form-group">
+            <label for="strokeWidth">Stroke Width</label>
+            <div class="input-group">
+                <input type="range" id="strokeWidth" formControlName="strokeWidth" min="0" max="10" step="0.5" class="form-slider">
+                <input type="number" formControlName="strokeWidth" min="0" max="10" step="0.5" class="form-number">
+            </div>
+        </div>
 
-    <div class="form-group">
-      <label for="fillColor">Fill Color</label>
-      <input 
-        type="color" 
-        id="fillColor" 
-        formControlName="fillColor" 
-        class="form-color"
-      >
-    </div>
-  </form>
+        <div class="form-group">
+            <label for="strokeColor">Stroke Color</label>
+            <input type="color" id="strokeColor" formControlName="strokeColor" class="form-color">
+        </div>
+
+        <div class="form-group">
+            <label for="fillColor">Fill Color</label>
+            <input type="color" id="fillColor" formControlName="fillColor" class="form-color">
+        </div>
+    </form>
 </div>

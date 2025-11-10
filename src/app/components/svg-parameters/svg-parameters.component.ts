@@ -6,131 +6,138 @@ import { CommonModule } from '@angular/common';
 import { SvgGeneratorService, SvgParameters } from '../../services/svg-generator.service';
 
 @Component({
-  selector: 'app-svg-parameters',
-  templateUrl: './svg-parameters.component.html',
-  styleUrls: ['./svg-parameters.component.scss'],
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+    selector: 'app-svg-parameters',
+    templateUrl: './svg-parameters.component.html',
+    styleUrls: ['./svg-parameters.component.scss'],
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule],
 })
 export class SvgParametersComponent implements OnInit, OnDestroy {
-  parametersForm: FormGroup;
-  private subscription = new Subscription();
+    parametersForm: FormGroup;
+    private subscription = new Subscription();
 
-  shapeOptions = [
-    { value: 'polygon', label: 'Polygon' },
-    { value: 'star', label: 'Star' },
-    { value: 'circle', label: 'Circle' },
-    { value: 'spiral', label: 'Spiral' },
-    { value: 'curved-star', label: 'Curved Star' }
-  ];
-
-  constructor(
-    private fb: FormBuilder,
-    private svgGeneratorService: SvgGeneratorService
-  ) {
-    this.parametersForm = this.createForm();
-  }
-
-  ngOnInit(): void {
-    // Subscribe to form changes and update service
-    this.subscription.add(
-      this.parametersForm.valueChanges
-        .pipe(debounceTime(100))
-        .subscribe((formValue) => {
-          this.svgGeneratorService.updateParameters(formValue);
-        })
-    );
-
-    // Subscribe to service parameters to sync form
-    this.subscription.add(
-      this.svgGeneratorService.parameters$.subscribe((params: SvgParameters) => {
-        this.parametersForm.patchValue(params, { emitEvent: false });
-      })
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  private createForm(): FormGroup {
-    const defaultParams = this.svgGeneratorService.getCurrentParameters();
-    
-    return this.fb.group({
-      shape: new FormControl(defaultParams.shape),
-      edgeCount: new FormControl(defaultParams.edgeCount),
-      angle: new FormControl(defaultParams.angle),
-      size: new FormControl(defaultParams.size),
-      strokeWidth: new FormControl(defaultParams.strokeWidth),
-      strokeColor: new FormControl(defaultParams.strokeColor),
-      fillColor: new FormControl(defaultParams.fillColor),
-      centerX: new FormControl(defaultParams.centerX),
-      centerY: new FormControl(defaultParams.centerY),
-      innerRadius: new FormControl(defaultParams.innerRadius),
-      spiralTurns: new FormControl(defaultParams.spiralTurns),
-      curvedRay: new FormControl(defaultParams.curvedRay),
-      curvedNoids: new FormControl(defaultParams.curvedNoids)
-    });
-  }
-
-  resetToDefaults(): void {
-    this.svgGeneratorService.updateParameters({
-      edgeCount: 6,
-      angle: 0,
-      size: 100,
-      strokeWidth: 2,
-      strokeColor: '#333333',
-      fillColor: '#4CAF50',
-      centerX: 250,
-      centerY: 250,
-      shape: 'polygon',
-      innerRadius: 50,
-      spiralTurns: 3,
-      curvedRay: 200,
-      curvedNoids: 8
-    });
-  }
-
-  randomizeParameters(): void {
-    const randomParams: Partial<SvgParameters> = {
-      edgeCount: Math.floor(Math.random() * 10) + 3,
-      angle: Math.floor(Math.random() * 360),
-      size: Math.floor(Math.random() * 150) + 50,
-      strokeWidth: Math.floor(Math.random() * 5) + 1,
-      strokeColor: this.getRandomColor(),
-      fillColor: this.getRandomColor(),
-      innerRadius: Math.floor(Math.random() * 80) + 20,
-      spiralTurns: Math.floor(Math.random() * 5) + 1,
-      curvedRay: Math.floor(Math.random() * 300) + 100,
-      curvedNoids: Math.floor(Math.random() * 12) + 4
-    };
-    
-    this.svgGeneratorService.updateParameters(randomParams);
-  }
-
-  private getRandomColor(): string {
-    const colors = [
-      '#FF5722', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', 
-      '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50',
-      '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800'
+    shapeOptions = [
+        { value: 'curved-star', label: 'Curved Star' },
+        { value: 'polygon', label: 'Polygon' },
+        { value: 'star', label: 'Star' },
+        { value: 'circle', label: 'Circle' },
+        { value: 'spiral', label: 'Spiral' },
     ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
 
-  get isShapeWithEdges(): boolean {
-    const shape = this.parametersForm.get('shape')?.value;
-    return shape === 'polygon' || shape === 'star';
-  }
+    constructor(private fb: FormBuilder, private svgGeneratorService: SvgGeneratorService) {
+        this.parametersForm = this.createForm();
+    }
 
-  get isStarShape(): boolean {
-    return this.parametersForm.get('shape')?.value === 'star';
-  }
+    ngOnInit(): void {
+        // Subscribe to form changes and update service
+        this.subscription.add(
+            this.parametersForm.valueChanges.pipe(debounceTime(100)).subscribe((formValue) => {
+                this.svgGeneratorService.updateParameters(formValue);
+            })
+        );
 
-  get isSpiralShape(): boolean {
-    return this.parametersForm.get('shape')?.value === 'spiral';
-  }
+        // Subscribe to service parameters to sync form
+        this.subscription.add(
+            this.svgGeneratorService.parameters$.subscribe((params: SvgParameters) => {
+                this.parametersForm.patchValue(params, { emitEvent: false });
+            })
+        );
+    }
 
-  get isCurvedStarShape(): boolean {
-    return this.parametersForm.get('shape')?.value === 'curved-star';
-  }
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    private createForm(): FormGroup {
+        const defaultParams = this.svgGeneratorService.getCurrentParameters();
+
+        return this.fb.group({
+            shape: new FormControl(defaultParams.shape),
+            edgeCount: new FormControl(defaultParams.edgeCount),
+            angle: new FormControl(defaultParams.angle),
+            size: new FormControl(defaultParams.size),
+            strokeWidth: new FormControl(defaultParams.strokeWidth),
+            strokeColor: new FormControl(defaultParams.strokeColor),
+            fillColor: new FormControl(defaultParams.fillColor),
+            centerX: new FormControl(defaultParams.centerX),
+            centerY: new FormControl(defaultParams.centerY),
+            innerRadius: new FormControl(defaultParams.innerRadius),
+            spiralTurns: new FormControl(defaultParams.spiralTurns),
+            curvedRay: new FormControl(defaultParams.curvedRay),
+            curvedNoids: new FormControl(defaultParams.curvedNoids),
+        });
+    }
+
+    resetToDefaults(): void {
+        this.svgGeneratorService.updateParameters({
+            edgeCount: 6,
+            angle: 0,
+            size: 100,
+            strokeWidth: 2,
+            strokeColor: '#333333',
+            fillColor: '#4CAF50',
+            centerX: 0,
+            centerY: 0,
+            shape: 'curved-star',
+            innerRadius: 50,
+            spiralTurns: 3,
+            curvedRay: 200,
+            curvedNoids: 8,
+        });
+    }
+
+    randomizeParameters(): void {
+        const randomParams: Partial<SvgParameters> = {
+            edgeCount: Math.floor(Math.random() * 10) + 3,
+            angle: Math.floor(Math.random() * 360),
+            size: Math.floor(Math.random() * 150) + 50,
+            strokeWidth: Math.floor(Math.random() * 5) + 1,
+            strokeColor: this.getRandomColor(),
+            fillColor: this.getRandomColor(),
+            innerRadius: Math.floor(Math.random() * 80) + 20,
+            spiralTurns: Math.floor(Math.random() * 5) + 1,
+            curvedRay: Math.floor(Math.random() * 300) + 100,
+            curvedNoids: Math.floor(Math.random() * 12) + 4,
+        };
+
+        this.svgGeneratorService.updateParameters(randomParams);
+    }
+
+    private getRandomColor(): string {
+        const colors = [
+            '#FF5722',
+            '#E91E63',
+            '#9C27B0',
+            '#673AB7',
+            '#3F51B5',
+            '#2196F3',
+            '#03A9F4',
+            '#00BCD4',
+            '#009688',
+            '#4CAF50',
+            '#8BC34A',
+            '#CDDC39',
+            '#FFEB3B',
+            '#FFC107',
+            '#FF9800',
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    get isShapeWithEdges(): boolean {
+        const shape = this.parametersForm.get('shape')?.value;
+        return shape === 'polygon' || shape === 'star';
+    }
+
+    get isStarShape(): boolean {
+        return this.parametersForm.get('shape')?.value === 'star';
+    }
+
+    get isSpiralShape(): boolean {
+        return this.parametersForm.get('shape')?.value === 'spiral';
+    }
+
+    get isCurvedStarShape(): boolean {
+        return this.parametersForm.get('shape')?.value === 'curved-star';
+    }
 }
