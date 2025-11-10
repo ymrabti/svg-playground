@@ -1,0 +1,94 @@
+[
+  {
+    "name": "Simple Polygon",
+    "description": "A basic polygon with customizable sides",
+    "shape": "polygon",
+    "parameters": {
+      "edgeCount": 6,
+      "size": 80,
+      "angle": 0,
+      "strokeWidth": 2,
+      "strokeColor": "#2196F3",
+      "fillColor": "#E3F2FD",
+      "centerX": 250,
+      "centerY": 250
+    }
+  },
+  {
+    "name": "Golden Star",
+    "description": "A classic 5-pointed star in golden colors",
+    "shape": "star",
+    "parameters": {
+      "edgeCount": 5,
+      "size": 100,
+      "innerRadius": 40,
+      "angle": -90,
+      "strokeWidth": 3,
+      "strokeColor": "#FF8F00",
+      "fillColor": "#FFD54F",
+      "centerX": 250,
+      "centerY": 250
+    }
+  },
+  {
+    "name": "Flower Spiral",
+    "description": "A gentle spiral resembling a flower",
+    "shape": "spiral",
+    "parameters": {
+      "spiralTurns": 4,
+      "size": 120,
+      "angle": 0,
+      "strokeWidth": 4,
+      "strokeColor": "#E91E63",
+      "fillColor": "#F8BBD9",
+      "centerX": 250,
+      "centerY": 250
+    }
+  },
+  {
+    "name": "Curved Sunburst",
+    "description": "A beautiful curved star with radiating pattern",
+    "shape": "curved-star",
+    "parameters": {
+      "curvedNoids": 12,
+      "size": 90,
+      "curvedRay": 180,
+      "angle": 15,
+      "strokeWidth": 2,
+      "strokeColor": "#FF5722",
+      "fillColor": "#FFAB91",
+      "centerX": 250,
+      "centerY": 250
+    }
+  },
+  {
+    "name": "Geometric Circle",
+    "description": "Perfect circle with gradient effect",
+    "shape": "circle",
+    "parameters": {
+      "size": 85,
+      "angle": 0,
+      "strokeWidth": 5,
+      "strokeColor": "#4CAF50",
+      "fillColor": "#C8E6C9",
+      "centerX": 250,
+      "centerY": 250
+    }
+  },
+  {
+    "name": "Complex Star",
+    "description": "Multi-pointed star with intricate details",
+    "shape": "star",
+    "parameters": {
+      "edgeCount": 8,
+      "size": 110,
+      "innerRadius": 55,
+      "angle": 22.5,
+      "strokeWidth": 2,
+      "strokeColor": "#9C27B0",
+      "fillColor": "#E1BEE7",
+      "centerX": 250,
+      "centerY": 250
+    }
+  }
+]
