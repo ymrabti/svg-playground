@@ -8,9 +8,9 @@ export const SEO_CONFIG = {
     name: 'SVG Playground',
     title: 'SVG Generator - Create Beautiful Geometric Shapes & Patterns Online',
     description: 'Create stunning SVG graphics with our free online SVG generator. Design polygons, stars, spirals, and curved shapes with real-time preview. Export as SVG or PNG.',
-    url: 'https://svg-playground.com',
-    domain: 'svg-playground.com',
-    email: 'contact@svg-playground.com',
+    url: 'https://svg-playground.youmrabti.com',
+    domain: 'svg-playground.youmrabti.com',
+    email: 'contact@svg-playground.youmrabti.com',
     author: 'SVG Playground Team'
   },
 
@@ -88,12 +88,12 @@ export const SEO_CONFIG = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       'name': 'SVG Playground',
-      'url': 'https://svg-playground.com',
-      'logo': 'https://svg-playground.com/assets/icons/logo.svg',
+      'url': 'https://svg-playground.youmrabti.com',
+      'logo': 'https://svg-playground.youmrabti.com/assets/icons/logo.svg',
       'contactPoint': {
         '@type': 'ContactPoint',
         'contactType': 'customer service',
-        'email': 'contact@svg-playground.com'
+        'email': 'contact@svg-playground.youmrabti.com'
       },
       'sameAs': [
         'https://twitter.com/svgplayground',
@@ -105,7 +105,7 @@ export const SEO_CONFIG = {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       'name': 'SVG Playground',
-      'url': 'https://svg-playground.com',
+      'url': 'https://svg-playground.youmrabti.com',
       'description': 'Create stunning SVG graphics with our free online SVG generator',
       'publisher': {
         '@type': 'Organization',
@@ -115,7 +115,7 @@ export const SEO_CONFIG = {
         '@type': 'SearchAction',
         'target': {
           '@type': 'EntryPoint',
-          'urlTemplate': 'https://svg-playground.com/search?q={search_term_string}'
+          'urlTemplate': 'https://svg-playground.youmrabti.com/search?q={search_term_string}'
         },
         'query-input': 'required name=search_term_string'
       }
@@ -126,7 +126,7 @@ export const SEO_CONFIG = {
       '@type': 'WebApplication',
       'name': 'SVG Generator',
       'description': 'Create stunning SVG graphics with real-time preview',
-      'url': 'https://svg-playground.com',
+      'url': 'https://svg-playground.youmrabti.com',
       'applicationCategory': 'DesignApplication',
       'operatingSystem': 'Web Browser',
       'offers': {

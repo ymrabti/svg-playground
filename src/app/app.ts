@@ -22,7 +22,7 @@ export class App implements OnInit {
       '@type': 'WebApplication',
       'name': 'SVG Generator',
       'description': 'Create stunning SVG graphics with our free online SVG generator. Design polygons, stars, spirals, and curved shapes with real-time preview.',
-      'url': 'https://svg-playground.com/',
+      'url': 'https://svg-playground.youmrabti.com/',
       'applicationCategory': 'DesignApplication',
       'operatingSystem': 'Web Browser',
       'offers': {

@@ -24,8 +24,8 @@ export class SvgGeneratorComponent implements OnInit {
 
     // Add breadcrumbs
     this.seoService.generateBreadcrumbs([
-      { name: 'Home', url: 'https://svg-playground.com/' },
-      { name: 'SVG Generator', url: 'https://svg-playground.com/generator' }
+      { name: 'Home', url: 'https://svg-playground.youmrabti.com/' },
+      { name: 'SVG Generator', url: 'https://svg-playground.youmrabti.com/generator' }
     ]);
   }
 }

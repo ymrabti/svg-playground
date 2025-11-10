@@ -23,8 +23,8 @@ export class SeoService {
     title: 'SVG Generator - Create Beautiful Geometric Shapes & Patterns Online',
     description: 'Create stunning SVG graphics with our free online SVG generator. Design polygons, stars, spirals, and curved shapes with real-time preview. Export as SVG or PNG.',
     keywords: 'SVG generator, online SVG creator, geometric shapes, vector graphics, polygon generator, star creator, spiral maker, curved star, SVG editor, free design tool',
-    image: 'https://svg-playground.com/assets/icons/apple-touch-icon.png',
-    url: 'https://svg-playground.com/',
+    image: 'https://svg-playground.youmrabti.com/assets/icons/apple-touch-icon.png',
+    url: 'https://svg-playground.youmrabti.com/',
     type: 'website',
     author: 'SVG Playground'
   };
@@ -81,7 +81,7 @@ export class SeoService {
    * Update SEO for specific routes
    */
   private updateSEOForRoute(url: string): void {
-    const baseUrl = 'https://svg-playground.com';
+    const baseUrl = 'https://svg-playground.youmrabti.com';
     
     switch (true) {
       case url === '/' || url === '/generator':

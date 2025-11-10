@@ -6,7 +6,7 @@
   
   <!-- Home Page -->
   <url>
-    <loc>https://svg-playground.com/</loc>
+    <loc>https://svg-playground.youmrabti.com/</loc>
     <lastmod>2025-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
   
   <!-- Generator Page -->
   <url>
-    <loc>https://svg-playground.com/generator</loc>
+    <loc>https://svg-playground.youmrabti.com/generator</loc>
     <lastmod>2025-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -22,7 +22,7 @@
   
   <!-- Documentation/Help (if added later) -->
   <url>
-    <loc>https://svg-playground.com/help</loc>
+    <loc>https://svg-playground.youmrabti.com/help</loc>
     <lastmod>2025-11-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -30,7 +30,7 @@
   
   <!-- Gallery/Examples (if added later) -->
   <url>
-    <loc>https://svg-playground.com/gallery</loc>
+    <loc>https://svg-playground.youmrabti.com/gallery</loc>
     <lastmod>2025-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
