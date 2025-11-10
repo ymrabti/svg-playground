@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CurvedStarParameters, CurvedStarService } from './curved-star.service';
 import { StarGeneratorService, StarGeneratorParameters } from './star-generator.service';
 import { YinYangGeneratorService, YinYangParameters } from './yinyang-generator.service';
+import { GisRendererService, GisRendererParameters } from './gis-renderer.service';
 
 export interface SvgParameters {
     edgeCount: number;
@@ -17,7 +18,7 @@ export interface SvgParameters {
     // position
     centerX: number;
     centerY: number;
-    shape: 'polygon' | 'star' | 'circle' | 'spiral' | 'curved-star' | 'custom-star' | 'yinyang';
+    shape: 'polygon' | 'star' | 'circle' | 'spiral' | 'curved-star' | 'custom-star' | 'yinyang' | 'gis';
     innerRadius?: number; // for star shape
     spiralTurns?: number; // for spiral shape
     curvedNoids?: number; // for curved star points
@@ -28,6 +29,11 @@ export interface SvgParameters {
     nested?: boolean; // create nested stars
     // yinyang parameters
     useGradient?: boolean; // use gradient colors for yinyang
+    // gis parameters
+    gisSourceUrl?: string; // GeoJSON source URL
+    gisScalingFunction?: 'min' | 'max' | 'width' | 'height'; // scaling function
+    showBoundingBox?: boolean; // show bounding box
+    useRandomGisColors?: boolean; // use random colors for GIS features
 }
 
 export const defaultSvgParameters: SvgParameters = {
@@ -52,6 +58,11 @@ export const defaultSvgParameters: SvgParameters = {
     nested: false,
     // yinyang defaults
     useGradient: true,
+    // gis defaults
+    gisSourceUrl: '',
+    gisScalingFunction: 'min',
+    showBoundingBox: true,
+    useRandomGisColors: true,
 };
 
 @Injectable({
@@ -64,7 +75,8 @@ export class SvgGeneratorService {
     constructor(
         private curvedStarService: CurvedStarService,
         private starGeneratorService: StarGeneratorService,
-        private yinYangGeneratorService: YinYangGeneratorService
+        private yinYangGeneratorService: YinYangGeneratorService,
+        private gisRendererService: GisRendererService
     ) {}
 
     updateParameters(parameters: Partial<SvgParameters>): void {
@@ -95,6 +107,8 @@ export class SvgGeneratorService {
                 return this.generateCustomStar(params);
             case 'yinyang':
                 return this.generateYinYang(params);
+            case 'gis':
+                return this.generateGis(params);
             default:
                 return this.generatePolygon(params);
         }
@@ -255,6 +269,14 @@ export class SvgGeneratorService {
             A ${params.size},${params.size} 0 1,1 ${params.centerX - params.size},${params.centerY} Z`;
     }
 
+    private generateGis(params: SvgParameters): string {
+        // For path generation mode, return a simple placeholder rectangle
+        return `M ${params.centerX - params.size},${params.centerY - params.size} 
+            L ${params.centerX + params.size},${params.centerY - params.size} 
+            L ${params.centerX + params.size},${params.centerY + params.size} 
+            L ${params.centerX - params.size},${params.centerY + params.size} Z`;
+    }
+
     generateSvgElement(): string {
         const params = this.getCurrentParameters();
 
@@ -320,6 +342,41 @@ export class SvgGeneratorService {
             };
 
             return this.yinYangGeneratorService.generateYinYang(yinYangParams);
+        }
+
+        // Special handling for GIS
+        if (params.shape === 'gis') {
+            if (!params.gisSourceUrl) {
+                // Return sample GIS data if no URL provided
+                const sampleData = this.gisRendererService.generateSampleGeoJson();
+                const gisParams: GisRendererParameters = {
+                    sourceUrl: '',
+                    scalingFunction: params.gisScalingFunction || 'min',
+                    translateX: params.centerX,
+                    translateY: params.centerY,
+                    scale: params.size / 200,
+                    strokeColor: params.strokeColor,
+                    strokeWidth: params.strokeWidth,
+                    fillColors: [params.fillColor],
+                    showBoundingBox: params.showBoundingBox || true,
+                    boundingBoxColor: params.strokeColor,
+                    viewBoxSize: Math.max(params.size * 2.5, 600),
+                    useRandomColors: params.useRandomGisColors || true,
+                };
+                return this.gisRendererService.generateGisMapFromData(sampleData, gisParams);
+            }
+
+            // Return placeholder for async GIS loading
+            return `
+                <svg width="100%" height="100%" viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="0" text-anchor="middle" fill="${params.fillColor}" font-size="16">
+                        Loading GIS Data...
+                    </text>
+                    <text x="0" y="30" text-anchor="middle" fill="${params.strokeColor}" font-size="12">
+                        ${params.gisSourceUrl}
+                    </text>
+                </svg>
+            `;
         }
 
         // Regular shapes

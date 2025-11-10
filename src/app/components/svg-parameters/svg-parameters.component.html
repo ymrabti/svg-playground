@@ -129,6 +129,39 @@
             </div>
         </div>
 
+        <!-- GIS Controls -->
+        <div class="gis-controls" *ngIf="isGisShape">
+            <div class="form-group">
+                <label for="gisSourceUrl">GeoJSON Source URL</label>
+                <input type="url" id="gisSourceUrl" formControlName="gisSourceUrl" placeholder="http://example.com/data.geojson" class="form-control">
+                <small class="form-text">Leave empty to use sample data</small>
+            </div>
+
+            <div class="form-group">
+                <label for="gisScalingFunction">Scaling Function</label>
+                <select id="gisScalingFunction" formControlName="gisScalingFunction" class="form-control">
+                    <option value="min">Minimum (Fit)</option>
+                    <option value="max">Maximum (Fill)</option>
+                    <option value="width">Width</option>
+                    <option value="height">Height</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="showBoundingBox">
+                    <input type="checkbox" id="showBoundingBox" formControlName="showBoundingBox" class="form-checkbox">
+                    Show Bounding Box
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="useRandomGisColors">
+                    <input type="checkbox" id="useRandomGisColors" formControlName="useRandomGisColors" class="form-checkbox">
+                    Use Random Colors
+                </label>
+            </div>
+        </div>
+
         <!-- Angle -->
         <div class="form-group">
             <label for="angle">Rotation Angle (degrees)</label>

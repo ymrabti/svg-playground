@@ -20,6 +20,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
         { value: 'curved-star', label: 'Curved Star' },
         { value: 'custom-star', label: 'Custom Star' },
         { value: 'yinyang', label: 'Yin Yang' },
+        { value: 'gis', label: 'GIS Map' },
         { value: 'polygon', label: 'Polygon' },
         { value: 'star', label: 'Star' },
         { value: 'circle', label: 'Circle' },
@@ -80,6 +81,11 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             spinDuration: new FormControl(defaultParams.spinDuration === false ? '' : defaultParams.spinDuration),
             // yinyang parameters
             useGradient: new FormControl(defaultParams.useGradient),
+            // gis parameters
+            gisSourceUrl: new FormControl(defaultParams.gisSourceUrl),
+            gisScalingFunction: new FormControl(defaultParams.gisScalingFunction),
+            showBoundingBox: new FormControl(defaultParams.showBoundingBox),
+            useRandomGisColors: new FormControl(defaultParams.useRandomGisColors),
         });
     }
 
@@ -104,6 +110,10 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             nested: false,
             spinDuration: false,
             useGradient: true,
+            gisSourceUrl: '',
+            gisScalingFunction: 'min',
+            showBoundingBox: true,
+            useRandomGisColors: true,
         });
     }
 
@@ -126,6 +136,8 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             startVertex: Math.floor(Math.random() * 8),
             nested: Math.random() > 0.5,
             useGradient: Math.random() > 0.5,
+            showBoundingBox: Math.random() > 0.5,
+            useRandomGisColors: Math.random() > 0.5,
         };
 
         this.svgGeneratorService.updateParameters(randomParams);
@@ -154,7 +166,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
     get isShapeWithEdges(): boolean {
         const shape = this.parametersForm.get('shape')?.value;
-        return shape === 'polygon' || shape === 'star' || shape === 'custom-star' || shape === 'yinyang';
+        return shape === 'polygon' || shape === 'star' || shape === 'custom-star' || shape === 'yinyang' || shape === 'gis';
     }
 
     get isStarShape(): boolean {
@@ -175,5 +187,9 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
     get isYinYangShape(): boolean {
         return this.parametersForm.get('shape')?.value === 'yinyang';
+    }
+
+    get isGisShape(): boolean {
+        return this.parametersForm.get('shape')?.value === 'gis';
     }
 }
