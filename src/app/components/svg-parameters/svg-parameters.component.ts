@@ -18,6 +18,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
     shapeOptions = [
         { value: 'curved-star', label: 'Curved Star' },
+        { value: 'custom-star', label: 'Custom Star' },
         { value: 'polygon', label: 'Polygon' },
         { value: 'star', label: 'Star' },
         { value: 'circle', label: 'Circle' },
@@ -32,7 +33,12 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
         // Subscribe to form changes and update service
         this.subscription.add(
             this.parametersForm.valueChanges.pipe(debounceTime(100)).subscribe((formValue) => {
-                this.svgGeneratorService.updateParameters(formValue);
+                // Process spin duration - convert empty string to false
+                const processedValue = {
+                    ...formValue,
+                    spinDuration: formValue.spinDuration === '' ? false : formValue.spinDuration
+                };
+                this.svgGeneratorService.updateParameters(processedValue);
             })
         );
 
@@ -66,6 +72,11 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             spiralTurns: new FormControl(defaultParams.spiralTurns),
             rayRatio: new FormControl(defaultParams.rayRatio),
             curvedNoids: new FormControl(defaultParams.curvedNoids),
+            // custom star parameters
+            minRadius: new FormControl(defaultParams.minRadius),
+            startVertex: new FormControl(defaultParams.startVertex),
+            nested: new FormControl(defaultParams.nested),
+            spinDuration: new FormControl(defaultParams.spinDuration === false ? '' : defaultParams.spinDuration),
         });
     }
 
@@ -80,11 +91,15 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             fillColor: '#4CAF50',
             centerX: 0,
             centerY: 0,
-            shape: 'curved-star',
+            shape: 'custom-star',
             innerRadius: 50,
             spiralTurns: 3,
             rayRatio: 1.5,
             curvedNoids: 8,
+            minRadius: 50,
+            startVertex: 0,
+            nested: false,
+            spinDuration: false,
         });
     }
 
@@ -103,6 +118,9 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
             spiralTurns: Math.floor(Math.random() * 5) + 1,
             rayRatio: Math.floor(Math.random() * 4.5) + 1.5,
             curvedNoids: Math.floor(Math.random() * 12) + 4,
+            minRadius: Math.floor(Math.random() * 50) + 10,
+            startVertex: Math.floor(Math.random() * 8),
+            nested: Math.random() > 0.5,
         };
 
         this.svgGeneratorService.updateParameters(randomParams);
@@ -131,7 +149,7 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
     get isShapeWithEdges(): boolean {
         const shape = this.parametersForm.get('shape')?.value;
-        return shape === 'polygon' || shape === 'star';
+        return shape === 'polygon' || shape === 'star' || shape === 'custom-star';
     }
 
     get isStarShape(): boolean {
@@ -144,5 +162,9 @@ export class SvgParametersComponent implements OnInit, OnDestroy {
 
     get isCurvedStarShape(): boolean {
         return this.parametersForm.get('shape')?.value === 'curved-star';
+    }
+
+    get isCustomStarShape(): boolean {
+        return this.parametersForm.get('shape')?.value === 'custom-star';
     }
 }

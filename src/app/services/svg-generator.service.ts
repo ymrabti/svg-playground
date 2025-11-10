@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CurvedStarParameters, CurvedStarService } from './curved-star.service';
+import { StarGeneratorService, StarGeneratorParameters } from './star-generator.service';
 
 export interface SvgParameters {
     edgeCount: number;
@@ -15,10 +16,15 @@ export interface SvgParameters {
     // position
     centerX: number;
     centerY: number;
-    shape: 'polygon' | 'star' | 'circle' | 'spiral' | 'curved-star';
+    shape: 'polygon' | 'star' | 'circle' | 'spiral' | 'curved-star' | 'custom-star';
     innerRadius?: number; // for star shape
     spiralTurns?: number; // for spiral shape
     curvedNoids?: number; // for curved star points
+    // custom star parameters
+    minRadius?: number; // minimum radius for nested stars
+    startVertex?: number; // starting vertex
+    spinDuration?: string | false; // spin animation duration
+    nested?: boolean; // create nested stars
 }
 
 export const defaultSvgParameters: SvgParameters = {
@@ -30,12 +36,17 @@ export const defaultSvgParameters: SvgParameters = {
     fillColor: '#4CAF50',
     centerX: 0,
     centerY: 0,
-    shape: 'curved-star',
+    shape: 'custom-star',
     innerRadius: 50,
     spiralTurns: 3,
     rayRatio: 1.5,
     radius: 280,
     curvedNoids: 8,
+    // custom star defaults
+    minRadius: 50,
+    startVertex: 0,
+    spinDuration: false,
+    nested: false,
 };
 
 @Injectable({
@@ -45,7 +56,10 @@ export class SvgGeneratorService {
     private parametersSubject = new BehaviorSubject<SvgParameters>(defaultSvgParameters);
     public parameters$ = this.parametersSubject.asObservable();
 
-    constructor(private curvedStarService: CurvedStarService) {}
+    constructor(
+        private curvedStarService: CurvedStarService,
+        private starGeneratorService: StarGeneratorService
+    ) {}
 
     updateParameters(parameters: Partial<SvgParameters>): void {
         const currentParams = this.parametersSubject.value;
@@ -71,6 +85,8 @@ export class SvgGeneratorService {
                 return this.generateSpiral(params);
             case 'curved-star':
                 return this.generateCurvedStar(params);
+            case 'custom-star':
+                return this.generateCustomStar(params);
             default:
                 return this.generatePolygon(params);
         }
@@ -173,6 +189,43 @@ export class SvgGeneratorService {
         );
     }
 
+    private generateCustomStar(params: SvgParameters): string {
+        const starParams: StarGeneratorParameters = {
+            noids: params.edgeCount,
+            radius: params.size,
+            minRadius: params.minRadius || 50,
+            dx: params.centerX,
+            dy: params.centerY,
+            initialAngle: params.angle,
+            startVertex: params.startVertex || 0,
+            nested: params.nested || false,
+            spinDuration: params.spinDuration || false,
+            fillColor: params.fillColor,
+            strokeColor: params.strokeColor,
+            strokeWidth: params.strokeWidth,
+            fillRule: 'evenodd' as const,
+            viewBoxSize: Math.max(params.size * 2.5, 600),
+        };
+
+        const starPaths = this.starGeneratorService.generateStarPaths(
+            starParams.noids,
+            starParams.radius,
+            starParams.dx,
+            starParams.dy,
+            starParams.initialAngle
+        );
+
+        // Convert paths to SVG path string for basic shapes
+        if (starPaths.length === 1) {
+            return this.starGeneratorService.pointsToPathString(starPaths[0]);
+        } else {
+            // Handle multiple paths
+            return starPaths.map(pathArray => 
+                this.starGeneratorService.pointsToPathString(pathArray)
+            ).join(' ');
+        }
+    }
+
     generateSvgElement(): string {
         const params = this.getCurrentParameters();
 
@@ -197,6 +250,28 @@ export class SvgGeneratorService {
             };
 
             return this.curvedStarService.generateCurvedStar(curvedParams);
+        }
+
+        // Special handling for custom stars
+        if (params.shape === 'custom-star') {
+            const starParams: StarGeneratorParameters = {
+                noids: params.edgeCount,
+                radius: params.size,
+                minRadius: params.minRadius || 50,
+                dx: params.centerX,
+                dy: params.centerY,
+                initialAngle: params.angle,
+                startVertex: params.startVertex || 0,
+                nested: params.nested || false,
+                spinDuration: params.spinDuration || false,
+                fillColor: params.fillColor,
+                strokeColor: params.strokeColor,
+                strokeWidth: params.strokeWidth,
+                fillRule: 'evenodd' as const,
+                viewBoxSize: Math.max(params.size * 2.5, 600),
+            };
+
+            return this.starGeneratorService.generateStar(starParams);
         }
 
         // Regular shapes
