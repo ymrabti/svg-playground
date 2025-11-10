@@ -12,7 +12,9 @@ html, body {
 }
 
 body {
-  overflow: hidden; /* Prevent scrollbars on the body for full-screen app */
+  /* Allow scrolling for better navbar integration */
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
 }
 
 /* Remove default margins and paddings */

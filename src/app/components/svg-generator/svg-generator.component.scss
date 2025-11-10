@@ -1,5 +1,5 @@
 .svg-generator-container {
-  height: 100vh;
+  height: calc(100vh - 70px); // Account for navbar height
   width: 100vw;
   overflow: hidden;
 }

@@ -18,23 +18,25 @@
         <div class="svg-container" #svgContainer></div>
     </div>
 
-    <div class="preview-info" *ngIf="currentParameters">
-        <div class="info-row">
-            <span class="info-label">Parameters:</span>
-            <span class="info-value">{{ getParametersInfo() }}</span>
+    @if (currentParameters) {
+        <div class="preview-info">
+            <div class="info-row">
+                <span class="info-label">Parameters:</span>
+                <span class="info-value">{{ getParametersInfo() }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Position:</span>
+                <span class="info-value">{{ currentParameters.centerX }}, {{ currentParameters.centerY }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Colors:</span>
+                <span class="info-value">
+                    <span class="color-swatch" [style.background-color]="currentParameters.fillColor"></span>
+                    Fill: {{ currentParameters.fillColor }} •
+                    <span class="color-swatch" [style.background-color]="currentParameters.strokeColor"></span>
+                    Stroke: {{ currentParameters.strokeColor }}
+                </span>
+            </div>
         </div>
-        <div class="info-row">
-            <span class="info-label">Position:</span>
-            <span class="info-value">{{ currentParameters.centerX }}, {{ currentParameters.centerY }}</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">Colors:</span>
-            <span class="info-value">
-                <span class="color-swatch" [style.background-color]="currentParameters.fillColor"></span>
-                Fill: {{ currentParameters.fillColor }} •
-                <span class="color-swatch" [style.background-color]="currentParameters.strokeColor"></span>
-                Stroke: {{ currentParameters.strokeColor }}
-            </span>
-        </div>
-    </div>
+    }
 </div>
